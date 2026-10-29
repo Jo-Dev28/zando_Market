@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zando Market — La marketplace de confiance</title>
   <meta name="description" content="Zando Market connecte vendeurs et acheteurs en RDC. Simple, rapide et sécurisé." />
+
+  <!-- Open Graph (Facebook, WhatsApp, LinkedIn, Telegram) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Zando Market — La marketplace de confiance" />
+  <meta property="og:description" content="Achetez, vendez et découvrez les meilleures offres en RDC. Simple, rapide et sécurisé." />
+  <meta property="og:url" content="https://Jo-Dev28.github.io/zando_Market/" />
+  <meta property="og:image" content="https://Jo-Dev28.github.io/zando_Market/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Zando Market — La marketplace de confiance" />
+  <meta property="og:site_name" content="Zando Market" />
+  <meta property="og:locale" content="fr_FR" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Zando Market — La marketplace de confiance" />
+  <meta name="twitter:description" content="Achetez, vendez et découvrez les meilleures offres en RDC." />
+  <meta name="twitter:image" content="https://Jo-Dev28.github.io/zando_Market/assets/og-image.png" />
+
+  <!-- Theme & Favicon -->
+  <meta name="theme-color" content="#f97316" />
+  <link rel="icon" type="image/jpeg" href="assets/logo2.jpeg" />
+  <link rel="apple-touch-icon" href="assets/logo2.jpeg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -1635,7 +1659,6 @@
     mobileBackdrop.addEventListener('click', closeMenu);
     menuLinks.forEach(link => link.addEventListener('click', closeMenu));
 
-    // Close menu on escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeMenu();
     });
