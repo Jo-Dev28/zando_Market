@@ -1,0 +1,1669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zando Market — La marketplace de confiance</title>
+  <meta name="description" content="Zando Market connecte vendeurs et acheteurs en RDC. Simple, rapide et sécurisé." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #ffffff;
+      color: #0f172a;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    :root {
+      --orange: #f97316;
+      --orange-dark: #ea580c;
+      --orange-light: #fb923c;
+      --bg: #ffffff;
+      --bg-soft: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-muted: #64748b;
+    }
+
+    /* ============ HEADER ============ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      border-bottom-color: var(--border);
+      box-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+      padding: 10px 24px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      font-size: 17px;
+      color: var(--text);
+      transition: opacity 0.2s;
+    }
+    .nav-brand:hover { opacity: 0.8; }
+    .nav-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
+      flex-shrink: 0;
+    }
+    .nav-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .nav-logo-fallback {
+      color: #fff;
+      font-size: 17px;
+      font-weight: 900;
+    }
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--orange);
+      background: rgba(249, 115, 22, 0.06);
+    }
+    .nav-cta {
+      padding: 9px 18px !important;
+      background: var(--orange);
+      color: #fff !important;
+      border-radius: 9px !important;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+    }
+    .nav-cta:hover {
+      background: var(--orange-dark) !important;
+      color: #fff !important;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.4);
+    }
+
+    /* Mobile menu button */
+    .menu-toggle {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--border);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 0;
+    }
+    .menu-toggle:hover {
+      background: var(--bg-soft);
+      border-color: var(--orange);
+    }
+    .menu-toggle svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text);
+    }
+
+    /* Mobile menu overlay */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 320px;
+      background: #fff;
+      z-index: 200;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      box-shadow: -8px 0 32px rgba(15, 23, 42, 0.15);
+    }
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+    .mobile-menu-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 199;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .mobile-menu-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-menu-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .mobile-menu-title {
+      font-weight: 900;
+      font-size: 16px;
+      color: var(--text);
+    }
+    .mobile-menu-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mobile-menu-close:hover {
+      background: #fee2e2;
+      border-color: #fecaca;
+      color: #dc2626;
+    }
+    .mobile-menu-close svg {
+      width: 18px;
+      height: 18px;
+    }
+    .mobile-menu-links {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      overflow-y: auto;
+    }
+    .mobile-menu-links a {
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mobile-menu-links a:hover,
+    .mobile-menu-links a:active {
+      background: rgba(249, 115, 22, 0.08);
+      color: var(--orange);
+    }
+    .mobile-menu-links a .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: rgba(249, 115, 22, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .mobile-menu-links a .icon svg {
+      width: 18px;
+      height: 18px;
+      color: var(--orange);
+    }
+    .mobile-menu-cta {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+    }
+    .mobile-menu-cta a {
+      display: block;
+      padding: 14px;
+      background: var(--orange);
+      color: #fff;
+      text-align: center;
+      border-radius: 11px;
+      font-weight: 700;
+      font-size: 15px;
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+      transition: all 0.2s;
+    }
+    .mobile-menu-cta a:hover {
+      background: var(--orange-dark);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 12px 16px; }
+      nav.scrolled { padding: 10px 16px; }
+      .nav-links { display: none; }
+      .menu-toggle { display: flex; }
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      padding: 130px 24px 90px;
+      text-align: center;
+      background: linear-gradient(180deg, #fff5ed 0%, #ffe4cc 40%, #ffffff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%; right: -10%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%; left: -10%;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(251,146,60,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--orange-dark);
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1);
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .hero h1 {
+      font-size: clamp(32px, 6vw, 60px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--orange-light), var(--orange-dark));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: clamp(15px, 1.7vw, 17px);
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 36px;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 11px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--orange);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+    }
+    .btn-primary:hover {
+      background: var(--orange-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(249, 115, 22, 0.4);
+    }
+    .btn-secondary {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--orange);
+      color: var(--orange);
+    }
+
+    /* Trust badges */
+    .trust-badges {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 44px;
+    }
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .trust-icon {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    /* ============ SECTIONS ============ */
+    section {
+      padding: 90px 24px;
+      position: relative;
+    }
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    .section-label {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--orange);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .section-subtitle {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 48px;
+    }
+    .section-header { text-align: left; margin-bottom: 40px; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============ WHAT IS ZANDO ============ */
+    .what-is { background: var(--bg-soft); }
+    .what-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .what-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    .what-visual {
+      padding: 40px 28px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+    }
+    .what-visual::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
+      animation: rotate 30s linear infinite;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .what-visual > * { position: relative; z-index: 1; }
+    .what-visual-icon {
+      width: 88px; height: 88px;
+      margin: 0 auto 20px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 16px 32px rgba(249, 115, 22, 0.3);
+    }
+    .what-visual h3 {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .what-visual p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .what-content p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+    .what-content strong { color: var(--orange-dark); font-weight: 700; }
+    .what-points {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 24px;
+    }
+    .what-point {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .what-point-icon {
+      width: 26px; height: 26px;
+      border-radius: 7px;
+      background: rgba(249, 115, 22, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .what-point-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .what-point-text strong { color: var(--text); font-weight: 700; }
+
+    /* ============ WHY ZANDO ============ */
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .why-card {
+      padding: 26px 24px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+    .why-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--orange);
+      box-shadow: 0 12px 28px rgba(249, 115, 22, 0.1);
+    }
+    .why-number {
+      font-size: 32px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--orange-light), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .why-card h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+    .why-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ============ SECURITY ============ */
+    .security { background: var(--bg-soft); }
+    .security-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      align-items: center;
+    }
+    @media (max-width: 860px) {
+      .security-grid { grid-template-columns: 1fr; }
+    }
+    .security-visual {
+      padding: 44px 28px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .security-visual::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(34, 197, 94, 0.08) 0%, transparent 60%);
+      animation: rotate 30s linear infinite;
+    }
+    .security-visual > * { position: relative; z-index: 1; }
+    .security-shield {
+      width: 88px; height: 88px;
+      margin: 0 auto 20px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 16px 32px rgba(34, 197, 94, 0.3);
+    }
+    .security-visual h3 {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .security-visual p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .security-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .security-item {
+      display: flex;
+      gap: 14px;
+      padding: 18px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: all 0.2s;
+    }
+    .security-item:hover {
+      border-color: var(--orange);
+      transform: translateX(4px);
+      box-shadow: 0 6px 16px rgba(249, 115, 22, 0.08);
+    }
+    .security-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      background: rgba(34, 197, 94, 0.1);
+    }
+    .security-title {
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 3px;
+      color: var(--text);
+    }
+    .security-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ============ FEATURES ============ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .feature-card {
+      padding: 24px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--orange);
+      box-shadow: 0 12px 24px rgba(249, 115, 22, 0.08);
+    }
+    .feature-icon {
+      width: 44px; height: 44px;
+      border-radius: 11px;
+      background: rgba(249, 115, 22, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      font-size: 20px;
+    }
+    .feature-card h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .feature-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ============ SCREENSHOTS ============ */
+    .screenshots { background: var(--bg-soft); }
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+    .screenshot-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 10px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .screenshot-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--orange);
+      box-shadow: 0 16px 32px rgba(249, 115, 22, 0.12);
+    }
+    .screenshot-image {
+      aspect-ratio: 9/16;
+      border-radius: 10px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      border: 1px dashed rgba(249, 115, 22, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .screenshot-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .screenshot-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px;
+      text-align: center;
+    }
+    .screenshot-placeholder-icon {
+      width: 40px; height: 40px;
+      border-radius: 11px;
+      background: rgba(249, 115, 22, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .screenshot-placeholder-text {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--orange-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .screenshot-info {
+      padding: 10px 4px 4px;
+      text-align: center;
+    }
+    .screenshot-title {
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 2px;
+      font-size: 12px;
+    }
+    .screenshot-desc {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* ============ TIMELINE ============ */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--orange), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 32px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px; top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.15);
+    }
+    .timeline-date {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--orange);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 5px;
+    }
+    .timeline-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+    .timeline-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ============ CONTACT ============ */
+    .contact { background: linear-gradient(180deg, #fff 0%, var(--bg-soft) 100%); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .contact-card {
+      padding: 28px 24px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      text-align: center;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--orange);
+      box-shadow: 0 16px 32px rgba(249, 115, 22, 0.1);
+    }
+    .contact-icon {
+      width: 56px; height: 56px;
+      margin: 0 auto 14px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .contact-icon svg {
+      width: 26px; height: 26px;
+    }
+    .contact-card h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .contact-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .contact-cta {
+      max-width: 620px;
+      margin: 48px auto 0;
+      padding: 40px 32px;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.08), rgba(234, 88, 12, 0.03));
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      border-radius: 20px;
+      text-align: center;
+    }
+    .contact-cta h3 {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .contact-cta p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    /* ============ FOOTER ============ */
+    footer {
+      padding: 56px 24px 28px;
+      background: #0f172a;
+      color: #cbd5e1;
+      text-align: center;
+    }
+    .footer-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .footer-brand-icon {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 900;
+      color: #fff;
+      overflow: hidden;
+    }
+    .footer-brand-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .footer-tagline {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 28px;
+    }
+    .footer-socials {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .social-icon {
+      width: 42px; height: 42px;
+      border-radius: 11px;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #cbd5e1;
+      transition: all 0.2s;
+    }
+    .social-icon svg {
+      width: 20px; height: 20px;
+    }
+    .social-icon:hover {
+      transform: translateY(-2px);
+    }
+    .social-icon.whatsapp:hover { background: #25d366; color: #fff; }
+    .social-icon.instagram:hover { background: #e4405f; color: #fff; }
+    .social-icon.facebook:hover { background: #1877f2; color: #fff; }
+    .social-icon.twitter:hover { background: #000; color: #fff; }
+    .social-icon.email:hover { background: var(--orange); color: #fff; }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: #94a3b8;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--orange); }
+    .footer-copy {
+      font-size: 12px;
+      color: #64748b;
+      padding-top: 24px;
+      border-top: 1px solid #1e293b;
+    }
+
+    /* ============ FLOATING WHATSAPP ============ */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #25d366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
+      z-index: 99;
+      transition: all 0.3s;
+      animation: whatsappPulse 2s infinite;
+    }
+    .whatsapp-float svg {
+      width: 30px;
+      height: 30px;
+    }
+    .whatsapp-float:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
+    }
+    @keyframes whatsappPulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5); }
+      50% { box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5), 0 0 0 12px rgba(37, 211, 102, 0.1); }
+    }
+    @media (max-width: 640px) {
+      .whatsapp-float {
+        bottom: 16px;
+        right: 16px;
+        width: 50px;
+        height: 50px;
+      }
+      .whatsapp-float svg {
+        width: 26px;
+        height: 26px;
+      }
+    }
+
+    ::selection {
+      background: var(--orange);
+      color: #fff;
+    }
+
+    @media (max-width: 640px) {
+      section { padding: 64px 16px; }
+      .hero { padding: 100px 16px 60px; }
+      .section-subtitle { margin-bottom: 32px; }
+      .contact-cta { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <nav id="nav">
+    <a href="#" class="nav-brand">
+      <div class="nav-logo">
+        <img src="assets/logo.jpeg" alt="Zando" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <div class="nav-logo-fallback" style="display:none;">Z</div>
+      </div>
+      Zando Market
+    </a>
+    <ul class="nav-links">
+      <li><a href="#what">À propos</a></li>
+      <li><a href="#security">Sécurité</a></li>
+      <li><a href="#screenshots">Aperçu</a></li>
+      <li><a href="#contact" class="nav-cta">Nous contacter</a></li>
+    </ul>
+    <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu-backdrop" id="mobileBackdrop"></div>
+  <aside class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+      <div class="mobile-menu-title">Menu</div>
+      <button class="mobile-menu-close" id="mobileClose" aria-label="Fermer le menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-menu-links">
+      <a href="#what" data-menu-link>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </div>
+        À propos
+      </a>
+      <a href="#security" data-menu-link>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        Sécurité
+      </a>
+      <a href="#screenshots" data-menu-link>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        Aperçu
+      </a>
+      <a href="#contact" data-menu-link>
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        Contact
+      </a>
+    </div>
+    <div class="mobile-menu-cta">
+      <a href="https://wa.me/243990000000" target="_blank" rel="noopener">Nous contacter</a>
+    </div>
+  </aside>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        En ligne · Version 1.0.0
+      </div>
+      <h1>La marketplace de<br/><span>confiance</span></h1>
+      <p>
+        Zando Market connecte vendeurs et acheteurs à travers la RDC.
+        Simple, rapide et sécurisée — découvrez une nouvelle façon d'acheter et de vendre.
+      </p>
+      <div class="hero-cta">
+        <a href="#what" class="btn btn-primary">Découvrir Zando →</a>
+        <a href="#contact" class="btn btn-secondary">Nous contacter</a>
+      </div>
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <div class="trust-icon" style="background:rgba(34,197,94,0.15);">🔒</div>
+          Données chiffrées
+        </div>
+        <div class="trust-badge">
+          <div class="trust-icon" style="background:rgba(59,130,246,0.15);">🛡️</div>
+          Comptes vérifiés
+        </div>
+        <div class="trust-badge">
+          <div class="trust-icon" style="background:rgba(249,115,22,0.15);">⚡</div>
+          Temps réel
+        </div>
+        <div class="trust-badge">
+          <div class="trust-icon" style="background:rgba(168,85,247,0.15);">🌍</div>
+          Bilingue FR / EN
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IS ZANDO -->
+  <section id="what" class="what-is">
+    <div class="container">
+      <div class="reveal section-header">
+        <span class="section-label">Qu'est-ce que Zando Market ?</span>
+        <h2 class="section-title">Une marketplace<br/>pensée pour vous</h2>
+        <p class="section-subtitle">
+          Zando Market, c'est bien plus qu'une application. C'est un lieu de rencontre
+          entre vendeurs et acheteurs, conçu pour rendre le commerce local simple et sûr.
+        </p>
+      </div>
+
+      <div class="what-grid reveal">
+        <div class="what-visual">
+          <div class="what-visual-icon">🛍️</div>
+          <h3>Zando Market</h3>
+          <p>La marketplace de confiance pour acheter et vendre en RDC.</p>
+        </div>
+
+        <div class="what-content">
+          <p>
+            <strong>Zando Market</strong> est une application mobile qui connecte les vendeurs
+            et les acheteurs à travers la <strong>République Démocratique du Congo</strong>.
+            Que vous souhaitiez vendre un produit ou trouver une bonne affaire, tout se passe
+            en quelques secondes.
+          </p>
+          <p>
+            Fini les intermédiaires compliqués. Discutez directement avec vos interlocuteurs,
+            publiez vos annonces depuis votre téléphone et suivez votre activité en temps réel.
+          </p>
+
+          <div class="what-points">
+            <div class="what-point">
+              <div class="what-point-icon">📱</div>
+              <div class="what-point-text">
+                <strong>Vendeurs :</strong> publiez vos produits et développez votre clientèle.
+              </div>
+            </div>
+            <div class="what-point">
+              <div class="what-point-icon">🛒</div>
+              <div class="what-point-text">
+                <strong>Acheteurs :</strong> trouvez ce que vous cherchez, discutez, achetez.
+              </div>
+            </div>
+            <div class="what-point">
+              <div class="what-point-icon">🌍</div>
+              <div class="what-point-text">
+                <strong>Pour tous :</strong> simple, rapide et disponible en FR / EN.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY ZANDO -->
+  <section id="why">
+    <div class="container">
+      <div class="reveal section-header">
+        <span class="section-label">Pourquoi nous choisir</span>
+        <h2 class="section-title">Ce qui rend<br/>Zando unique</h2>
+        <p class="section-subtitle">
+          Six raisons pour lesquelles des milliers d'utilisateurs font confiance à Zando Market.
+        </p>
+      </div>
+
+      <div class="why-grid reveal">
+        <div class="why-card">
+          <div class="why-number">01</div>
+          <h3>Publiez en 30 secondes</h3>
+          <p>Prenez une photo, ajoutez un prix, c'est en ligne. Visible immédiatement par des milliers d'acheteurs.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-number">02</div>
+          <h3>Discutez en direct</h3>
+          <p>La messagerie temps réel vous connecte directement aux vendeurs. Négociez, questionnez, rassurez-vous.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-number">03</div>
+          <h3>Développez votre boutique</h3>
+          <p>Suivez vos ventes, vos abonnés et vos statistiques. Des outils pensés pour les vendeurs ambitieux.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-number">04</div>
+          <h3>Trouvez ce qu'il vous faut</h3>
+          <p>Recherche intelligente, filtres par catégorie et localisation. Découvrez les annonces qui vous correspondent.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-number">05</div>
+          <h3>Notifications instantanées</h3>
+          <p>Soyez alerté dès qu'un acheteur vous contacte, qu'un paiement est confirmé ou qu'une annonce vous intéresse.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-number">06</div>
+          <h3>Disponible partout</h3>
+          <p>Sur mobile comme sur le web, votre marketplace vous suit partout. Synchronisation en temps réel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section id="security" class="security">
+    <div class="container">
+      <div class="reveal section-header">
+        <span class="section-label">Sécurité</span>
+        <h2 class="section-title">Vos données<br/>sont protégées</h2>
+        <p class="section-subtitle">
+          Chez Zando Market, la sécurité n'est pas une option. Chaque compte,
+          chaque transaction et chaque message est protégé.
+        </p>
+      </div>
+
+      <div class="security-grid reveal">
+        <div class="security-visual">
+          <div class="security-shield">🛡️</div>
+          <h3>Confidentialité garantie</h3>
+          <p>Vos informations personnelles ne sont jamais partagées avec des tiers.</p>
+        </div>
+
+        <div class="security-list">
+          <div class="security-item">
+            <div class="security-icon">🔐</div>
+            <div>
+              <div class="security-title">Connexion sécurisée</div>
+              <div class="security-desc">Toutes les communications sont chiffrées de bout en bout.</div>
+            </div>
+          </div>
+          <div class="security-item">
+            <div class="security-icon">👤</div>
+            <div>
+              <div class="security-title">Comptes vérifiés</div>
+              <div class="security-desc">Badges « Certifié » pour acheter en toute confiance.</div>
+            </div>
+          </div>
+          <div class="security-item">
+            <div class="security-icon">💬</div>
+            <div>
+              <div class="security-title">Messages privés</div>
+              <div class="security-desc">Vos conversations sont strictement confidentielles.</div>
+            </div>
+          </div>
+          <div class="security-item">
+            <div class="security-icon">🚫</div>
+            <div>
+              <div class="security-title">Contenu modéré</div>
+              <div class="security-desc">Signalez un contenu abusif en un tap.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <div class="reveal section-header">
+        <span class="section-label">Fonctionnalités</span>
+        <h2 class="section-title">Tout ce qu'il faut<br/>pour vendre et acheter</h2>
+        <p class="section-subtitle">
+          Une expérience complète, pensée pour les vendeurs comme pour les acheteurs.
+        </p>
+      </div>
+
+      <div class="features-grid reveal">
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Application mobile</h3>
+          <p>Publiez vos annonces et gérez votre boutique depuis votre téléphone.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💳</div>
+          <h3>Abonnements vendeurs</h3>
+          <p>Trois plans adaptés, avec paiement Mobile Money sécurisé.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Messagerie temps réel</h3>
+          <p>Discutez en direct avec les vendeurs, produit par produit.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>Modération active</h3>
+          <p>Signalements, vérification et modération des annonces.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3>Notifications instantanées</h3>
+          <p>Soyez alerté en temps réel de toute activité importante.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌍</div>
+          <h3>Bilingue FR / EN</h3>
+          <p>Interface disponible en français et en anglais.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section id="screenshots" class="screenshots">
+    <div class="container">
+      <div class="reveal section-header">
+        <span class="section-label">Aperçu</span>
+        <h2 class="section-title">L'application<br/>en images</h2>
+        <p class="section-subtitle">
+          Un aperçu des écrans qui rendent Zando Market simple et agréable à utiliser.
+        </p>
+      </div>
+
+      <div class="screenshots-grid reveal">
+        <div class="screenshot-card">
+          <div class="screenshot-image">
+            <img src="assets/screenshot-home.jpeg" alt="Accueil" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-placeholder" style="display:none;">
+              <div class="screenshot-placeholder-icon">🏠</div>
+              <div class="screenshot-placeholder-text">Accueil</div>
+            </div>
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-title">Accueil</div>
+            <div class="screenshot-desc">Découvrez</div>
+          </div>
+        </div>
+
+        <div class="screenshot-card">
+          <div class="screenshot-image">
+            <img src="assets/screenshot-search.jpeg" alt="Recherche" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-placeholder" style="display:none;">
+              <div class="screenshot-placeholder-icon">🔍</div>
+              <div class="screenshot-placeholder-text">Recherche</div>
+            </div>
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-title">Recherche</div>
+            <div class="screenshot-desc">Filtres</div>
+          </div>
+        </div>
+
+        <div class="screenshot-card">
+          <div class="screenshot-image">
+            <img src="assets/screenshot-product.jpeg" alt="Produit" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-placeholder" style="display:none;">
+              <div class="screenshot-placeholder-icon">📦</div>
+              <div class="screenshot-placeholder-text">Produit</div>
+            </div>
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-title">Produit</div>
+            <div class="screenshot-desc">Détails</div>
+          </div>
+        </div>
+
+        <div class="screenshot-card">
+          <div class="screenshot-image">
+            <img src="assets/screenshot-chat.jpeg" alt="Messages" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-placeholder" style="display:none;">
+              <div class="screenshot-placeholder-icon">💬</div>
+              <div class="screenshot-placeholder-text">Messages</div>
+            </div>
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-title">Messages</div>
+            <div class="screenshot-desc">Chat</div>
+          </div>
+        </div>
+
+        <div class="screenshot-card">
+          <div class="screenshot-image">
+            <img src="assets/screenshot-profile.jpeg" alt="Profil" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-placeholder" style="display:none;">
+              <div class="screenshot-placeholder-icon">👤</div>
+              <div class="screenshot-placeholder-text">Profil</div>
+            </div>
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-title">Profil</div>
+            <div class="screenshot-desc">Boutique</div>
+          </div>
+        </div>
+
+        <div class="screenshot-card">
+          <div class="screenshot-image">
+            <img src="assets/screenshot-subscription.jpeg" alt="Abonnements" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            <div class="screenshot-placeholder" style="display:none;">
+              <div class="screenshot-placeholder-icon">💳</div>
+              <div class="screenshot-placeholder-text">Abonnements</div>
+            </div>
+          </div>
+          <div class="screenshot-info">
+            <div class="screenshot-title">Abonnements</div>
+            <div class="screenshot-desc">Plans</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <div class="container">
+      <div class="reveal section-header">
+        <span class="section-label">Roadmap</span>
+        <h2 class="section-title">Ce qui est fait<br/>et ce qui arrive</h2>
+        <p class="section-subtitle">
+          Une vision claire pour faire évoluer la plateforme.
+        </p>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <div class="timeline-date">Q1 2026</div>
+          <div class="timeline-title">Lancement de l'application</div>
+          <div class="timeline-desc">Authentification, annonces, messagerie et abonnements vendeurs.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Q2 2026</div>
+          <div class="timeline-title">Confiance renforcée</div>
+          <div class="timeline-desc">Vérification des vendeurs, badges « Certifié » et protection des transactions.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Q3 2026</div>
+          <div class="timeline-title">Notifications intelligentes</div>
+          <div class="timeline-desc">Alertes personnalisées pour les messages, paiements et annonces.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Q4 2026</div>
+          <div class="timeline-title">Expansion internationale</div>
+          <div class="timeline-desc">Ouverture vers d'autres pays africains avec Mobile Money local.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <div class="reveal section-header">
+        <span class="section-label">Contact</span>
+        <h2 class="section-title">Parlons de<br/>votre projet</h2>
+        <p class="section-subtitle">
+          Une question, une suggestion, un partenariat ? Nous sommes là pour vous répondre.
+        </p>
+      </div>
+
+      <div class="contact-grid reveal">
+        <a href="mailto:hello@zandomarket.com" class="contact-card">
+          <div class="contact-icon" style="background:rgba(249,115,22,0.1);color:#f97316;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+          <h3>Email</h3>
+          <p>hello@zandomarket.com</p>
+        </a>
+
+        <a href="https://wa.me/243990000000" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon" style="background:rgba(37,211,102,0.1);color:#25d366;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          </div>
+          <h3>WhatsApp</h3>
+          <p>+243 990 000 000</p>
+        </a>
+
+        <a href="https://instagram.com/zandomarket" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon" style="background:rgba(228,64,95,0.1);color:#e4405f;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </div>
+          <h3>Instagram</h3>
+          <p>@zandomarket</p>
+        </a>
+
+        <a href="https://facebook.com/zandomarket" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon" style="background:rgba(24,119,242,0.1);color:#1877f2;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+          <h3>Facebook</h3>
+          <p>Zando Market</p>
+        </a>
+      </div>
+
+      <div class="contact-cta reveal">
+        <h3>Prêt à essayer ?</h3>
+        <p>Rejoignez des milliers de vendeurs et d'acheteurs sur Zando Market.</p>
+        <a href="https://wa.me/243990000000" target="_blank" rel="noopener" class="btn btn-primary">
+          Nous contacter sur WhatsApp →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <div class="footer-brand-icon">
+        <img src="assets/logo.jpeg" alt="Zando" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+        <span style="display:none;">Z</span>
+      </div>
+      Zando Market
+    </div>
+    <p class="footer-tagline">La marketplace de confiance en RDC.</p>
+
+    <div class="footer-socials">
+      <a href="https://wa.me/243990000000" target="_blank" rel="noopener" class="social-icon whatsapp" title="WhatsApp" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+      </a>
+      <a href="https://instagram.com/zandomarket" target="_blank" rel="noopener" class="social-icon instagram" title="Instagram" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://facebook.com/zandomarket" target="_blank" rel="noopener" class="social-icon facebook" title="Facebook" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://twitter.com/zandomarket" target="_blank" rel="noopener" class="social-icon twitter" title="Twitter / X" aria-label="Twitter / X">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="mailto:hello@zandomarket.com" class="social-icon email" title="Email" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+    </div>
+
+    <div class="footer-links">
+      <a href="#what">À propos</a>
+      <a href="#security">Sécurité</a>
+      <a href="#screenshots">Aperçu</a>
+      <a href="#contact">Contact</a>
+    </div>
+
+    <div class="footer-copy">
+      © 2026 Zando Market. Tous droits réservés.
+    </div>
+  </footer>
+
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/243990000000?text=Bonjour%20Zando%20Market%2C%20je%20vous%20contacte%20depuis%20votre%20site." 
+     target="_blank" 
+     rel="noopener" 
+     class="whatsapp-float" 
+     title="Discuter sur WhatsApp"
+     aria-label="Discuter sur WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  </a>
+
+  <script>
+    // NAV SCROLL EFFECT
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 30) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    });
+
+    // MOBILE MENU
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileBackdrop = document.getElementById('mobileBackdrop');
+    const mobileClose = document.getElementById('mobileClose');
+    const menuLinks = document.querySelectorAll('[data-menu-link]');
+
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      mobileBackdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      mobileBackdrop.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    menuToggle.addEventListener('click', openMenu);
+    mobileClose.addEventListener('click', closeMenu);
+    mobileBackdrop.addEventListener('click', closeMenu);
+    menuLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+    // Close menu on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeMenu();
+    });
+
+    // REVEAL ON SCROLL
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach((el) => observer.observe(el));
+
+    // SMOOTH SCROLL
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offset = 80;
+          const targetPos = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top: targetPos, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
